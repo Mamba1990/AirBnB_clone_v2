@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the file storage class for AirBnB"""
+"""This module defines a class to manage file storage for hbnb clone"""
 import json
 from models.base_model import BaseModel
 from models.user import User
@@ -12,69 +12,68 @@ import shlex
 
 
 class FileStorage:
-    """This class serializes instances to a JSON file and
-    deserializes JSON file to instances
+    """This class manages storage of hbnb models in JSON format
     Attributes:
-        __file_path: path to the JSON file
-        __objects: objects will be stored
+        __file_path: The JSON's file path.
+        __objects: A dictionary that will store instances
     """
     __file_path = "file.json"
     __objects = {}
 
     def all(self, cls=None):
-        """returns a dictionary
+        """Returns a dictionary of models currently in storage
         Return:
-            returns a dictionary of __object
+            returns a dictionary that will store instances
         """
         dic = {}
         if cls:
             dictionary = self.__objects
-            for key in dictionary:
-                partition = key.replace('.', ' ')
+            for k in dictionary:
+                partition = k.replace('.', ' ')
                 partition = shlex.split(partition)
                 if (partition[0] == cls.__name__):
-                    dic[key] = self.__objects[key]
+                    dic[k] = self.__objects[k]
             return (dic)
         else:
             return self.__objects
 
     def new(self, obj):
-        """sets __object to given obj
+        """Adds new object to storage dictionary
         Args:
-            obj: given object
+            obj: The given object
         """
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             self.__objects[key] = obj
 
     def save(self):
-        """serialize the file path to JSON file path
-        """
-        my_dict = {}
-        for key, value in self.__objects.items():
-            my_dict[key] = value.to_dict()
-        with open(self.__file_path, 'w', encoding="UTF-8") as f:
-            json.dump(my_dict, f)
+        """Saves storage dictionary to file"""
+        with open(FileStorage.__file_path, 'w') as f:
+            temp = {}
+            temp.update(FileStorage.__objects)
+            for key, val in temp.items():
+                temp[key] = val.to_dict()
+            json.dump(temp, f)
 
     def reload(self):
-        """serialize the file path to JSON file path
+        """Loads storage dictionary from file
         """
         try:
-            with open(self.__file_path, 'r', encoding="UTF-8") as f:
-                for key, value in (json.load(f)).items():
+            with open(self.__file_path, 'r', encoding="UTF-8") as fi:
+                for key, value in (json.load(fi)).items():
                     value = eval(value["__class__"])(**value)
                     self.__objects[key] = value
         except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
-        """ delete an existing element
+        """ Deleting an existing element
         """
         if obj:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
-            del self.__objects[key]
+            k = "{}.{}".format(type(obj).__name__, obj.id)
+            del self.__objects[k]
 
     def close(self):
-        """ calls reload()
+        """ Makes call to reload()
         """
         self.reload()
