@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" sqlAlchemy's class """
+""" new class for sqlAlchemy """
 from os import getenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import (create_engine)
@@ -14,7 +14,7 @@ from models.amenity import Amenity
 
 
 class DBStorage:
-    """ creation of tables in environmental"""
+    """ create tables in environmental"""
     __engine = None
     __session = None
 
@@ -33,45 +33,45 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Defines a dictionary
+        """returns a dictionary
         Return:
-             a dictionary of __object
+            returns a dictionary of __object
         """
-        dictionary = {}
+        dic = {}
         if cls:
             if type(cls) is str:
                 cls = eval(cls)
             query = self.__session.query(cls)
-            for el in query:
+            for elem in query:
                 key = "{}.{}".format(type(elem).__name__, elem.id)
-                dictionary[key] = el
+                dic[key] = elem
         else:
-            list_a = [State, City, User, Place, Review, Amenity]
-            for clase in list_a:
+            lista = [State, City, User, Place, Review, Amenity]
+            for clase in lista:
                 query = self.__session.query(clase)
-                for el in query:
-                    key = "{}.{}".format(type(el).__name__, el.id)
-                    dictionary[key] = el
-        return (dictionary)
+                for elem in query:
+                    key = "{}.{}".format(type(elem).__name__, elem.id)
+                    dic[key] = elem
+        return (dic)
 
     def new(self, obj):
-        """adding a new element in the table
+        """add a new element in the table
         """
         self.__session.add(obj)
 
     def save(self):
-        """saving the changes
+        """save changes
         """
         self.__session.commit()
 
     def delete(self, obj=None):
-        """deletion of an element in the table
+        """delete an element in the table
         """
         if obj:
             self.session.delete(obj)
 
     def reload(self):
-        """Makes the configuration
+        """configuration
         """
         Base.metadata.create_all(self.__engine)
         sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
@@ -79,6 +79,6 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """ Makes a call to remove()
+        """ calls remove()
         """
         self.__session.close()
