@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" This modules handles Database Storage """
+""" Module representing Database Storage """
 from sqlalchemy import create_engine
 from os import getenv
 from models.base_model import Base
@@ -13,16 +13,16 @@ from models.amenity import Amenity
 
 
 class DBStorage:
-    '''
-    Handles database engine
-    '''
+    """
+    Class handles database engine
+    """
     __engine = None
     __session = None
 
     def __init__(self):
-        '''
-        Create engine for database
-        '''
+        """
+        Function creates engine for database
+        """
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
             getenv('HBNB_MYSQL_USER'),
             getenv('HBNB_MYSQL_PWD'),
@@ -35,9 +35,10 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        '''
-        query for all objects on the current database session
-        '''
+        """
+        Handles query for all objects on the
+        current database session
+        """
         classes = {
             "City": City,
             "State": State,
@@ -46,44 +47,45 @@ class DBStorage:
             "Review": Review,
             "Amenity": Amenity,
         }
-        result = {}
+        res = {}
         query_rows = []
 
         if cls:
-            '''Query for all objects belonging to cls'''
+            """ a query for all cls' objects """
             if type(cls) is str:
                 cls = eval(cls)
             query_rows = self.__session.query(cls)
             for obj in query_rows:
                 key = '{}.{}'.format(type(obj).__name__, obj.id)
-                result[key] = obj
-            return result
+                res[key] = obj
+            return res
         else:
-            '''Query for all types of objects'''
+            """a query for all objects"""
             for name, value in classes.items():
                 query_rows = self.__session.query(value)
                 for obj in query_rows:
                     key = '{}.{}'.format(name, obj.id)
-                    result[key] = obj
-            return result
+                    res[key] = obj
+            return res
 
     def new(self, obj):
-        '''add the object to the current database session'''
+        """Adding object to the current database session"""
         self.__session.add(obj)
 
     def save(self):
-        '''commit all changes of the current database session'''
+        """func commiting all changes of the
+        current database session"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        '''delete obj from the current database session'''
+        """Deleting obj from the current database session"""
         self.__session.delete(obj)
 
     def reload(self):
-        '''
-        - create all tables in the database
-        - create the current database session from the engine
-        '''
+        """
+         Creates all tables in the database
+         Creates the current database session from the engine
+        """
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
@@ -92,7 +94,6 @@ class DBStorage:
 
     def close(self):
         """
-        Because SQLAlchemy doesn't reload his `Session`
-        when it's time to insert new data, we force it to!
+        function to closee
         """
         self.__session.close()
