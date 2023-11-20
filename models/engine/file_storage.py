@@ -10,12 +10,12 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        filtered_by_class = {}
+        filteredByClass = {}
         if cls:
             for key, value in FileStorage.__objects.items():
                 if value.__class__ == cls:
-                    filtered_by_class[key] = value
-            return filtered_by_class
+                    filteredByClass[key] = value
+            return filteredByClass
         return FileStorage.__objects
 
     def new(self, obj):
@@ -56,11 +56,11 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        ''' delete obj from __objects if it is inside '''
+        """ Functon deleting obj from __objects if it is inside"""
         if obj:
             key = '{}.{}'.format(type(obj).__name__, obj.id)
             del FileStorage.__objects[key]
 
     def close(self):
-        """ Deserialize JSON file to objects before leaving """
+        """ Function to close """
         self.reload()
