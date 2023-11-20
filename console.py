@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
             value = keyValue[1]
             table = {
                 34: None,
-                95: 3
+                95: 32
             }
             value = value.translate(table)
             setattr(new_instance, key, value)
