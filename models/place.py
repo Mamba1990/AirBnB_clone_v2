@@ -41,21 +41,22 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-            '''FileStorage relationship between Place and Review'''
+            '''Defines FileStorage relationship 
+            between Place and Review'''
             from models import storage
             from models.review import Review
 
-            review_list = []
-            review_dict = storage.all(Review)
-            for review in review_dict.values():
+            reviewList = []
+            reviewDict = storage.all(Review)
+            for review in reviewDict.values():
                 if review.place_id == self.id:
-                    review_list.append(review)
-            return review_list
+                    reviewList.append(review)
+            return reviewList
 
         @property
         def amenities(self):
             '''
-            Returns the list of `Amenity` instances
+            Displays the list of `Amenity` instances
             based on the attribute `amenity_ids` that
             contains all `Amenity.id` linked to the Place
             '''
@@ -64,7 +65,7 @@ class Place(BaseModel, Base):
         @amenities.setter
         def amenities(self, obj=None):
             '''
-            handles append method for adding an
+            A Method that adds an
             Amenity.id to the attribute amenity_ids
             '''
             if type(obj) is Amenity and obj.id not in self.amenity_ids:

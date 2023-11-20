@@ -14,20 +14,20 @@ class State(BaseModel, Base):
         name = Column(String(128), nullable=False)
         cities = relationship('City', cascade='all, delete', backref='state')
     else:
-        ''' File Storage relationship '''
+        ''' A Storage file for relationship '''
         @property
         def cities(self):
             '''
-            returns the list of City instances
-            with state_id equals to the current State.id
+            Displays the list of City instances
+            with state_id == to the current State.id
             '''
             from models import storage
             from models.city import City
 
-            city_list = []
-            city_dict = storage.all(City)
+            cityList = []
+            cityDict = storage.all(City)
 
-            for city in city_dict.values():
+            for city in cityDict.values():
                 if city.state_id == self.id:
-                    city_list.append(city)
-            return city_list
+                    cityList.append(city)
+            return cityList
