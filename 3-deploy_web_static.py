@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Distributes an archive to my web servers,
+Distributing an archive to my web servers,
 using the function deploy
 """
 from fabric.api import *
@@ -12,7 +12,7 @@ env.user = 'ubuntu'
 
 
 def deploy():
-    ''' Deploys archive '''
+    """ Deploying archive """
     archive_path = do_pack()
     if not archive_path:
         return False
@@ -20,10 +20,10 @@ def deploy():
 
 
 def do_pack():
-    '''
-    Generates a tgz archive from the
+    """
+    Generating a tgz archive from the
     contents of the web_static folder
-    '''
+    """
     try:
         local('mkdir -p versions')
         datetime_format = '%Y%m%d%H%M%S'
@@ -38,9 +38,9 @@ def do_pack():
 
 
 def do_deploy(archive_path):
-    '''
-    Deploy archive to web server
-    '''
+    """
+    Deploying archive to web server
+    """
     if not os.path.exists(archive_path):
         return False
     file_name = archive_path.split('/')[1]
