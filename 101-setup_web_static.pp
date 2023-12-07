@@ -1,5 +1,5 @@
 #!/usr/bin/puppet apply
-# Script that redoes task 0 (sets up your web servers for the deployment of web_static)
+# Redoing task 0 (sets up your web servers for the deployment of web_static)
 
 exec { 'apt-get-update':
   command => '/usr/bin/apt-get update',
