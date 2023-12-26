@@ -14,6 +14,10 @@ def hello_hbnb():
 @app.route('/hbnb')
 def hbnb():
     """Displaying 'HBNB' on the /hbnb page"""
+
+    Returns:
+        str: The index page's text
+    """
     return 'HBNB'
 
 if __name__ == '__main__':
