@@ -33,9 +33,9 @@ def python_compliment(text='is_cool'):
 
 
 @app.route('/number/<int:n>')
-def display_integer(m):
+def display_integer(n):
     """ Displaying n is a number only if n is an integer """
-    return "%d is a number" % m
+    return "%d is a number" % n
 
 
 if __name__ == '__main__':
